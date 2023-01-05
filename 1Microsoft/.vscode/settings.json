@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "cmath": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "vector": "cpp"
     }
 }
