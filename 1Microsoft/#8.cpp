@@ -3,62 +3,45 @@ using namespace std;
 
 class Solution {
 public:
-    vector<int> parent;
-    vector<int> dis;
-    vector<vector<int>> adj;
+    long long solve(int l,int r,vector<int>& vi,int diff){
+        if(l==r) return 0;
 
+        int m=(l+r)/2;
+        long long result=solve(l,m,vi,diff)+solve(m+1,r,vi,diff);
 
+        int l1=l,r1=m,l2=m+1,r2=r;
 
-    void calParent(int root,int curParent=0,int curDis=0){
-        dis[root]=curDis;
-        parent[root]=curParent;
-        for(int i: adj[root]){
-            if(i==curParent) continue;
-            
-            
-            calParent(i,root,curDis+1);
+        vector<long long> changed;
+        for(int i=l2;i<=r2;i++){
+            int act_diff=vi[i]+diff;
+            int ind=upper_bound(vi.begin()+l1,vi.begin()+r1+1,act_diff)-vi.begin()-1;
+            if(ind<=r1)
+            result+=ind-l1+1;
         }
+
+        while(l1<=r1&&l2<=r2){
+            if(vi[l1]<=vi[l2])
+            changed.push_back(vi[l1++]);
+            else
+            changed.push_back(vi[l2++]);
+        }
+        while(l1<=r1) changed.push_back(vi[l1++]);
+        while(l2<=r2) changed.push_back(vi[l2++]);
+
+        for(int i=l;i<=r;i++){
+            vi[i]=changed[i-l];
+        }
+
+        return result;
 
     }
-
-    int dfs(int curr,vector<int> &amt,int temp=0 ){
-        int curr_cost=amt[curr];
-        int ans=-INT_MAX;
-        for(int i: adj[curr])
-        {
-            //this condition taking care that no node is connected to root 
-            if(i!=temp) ans=max(ans,dfs(i,amt,curr));
-        }
-        if(ans==-INT_MAX)
-        return curr_cost;
-        else return curr_cost+ans;
-    }
-
-    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
-        int edges_count=edges.size();
-        adj.resize(edges_count+1,vector<int>());
-        for(auto &i:edges)
-        {
-            adj[i[0]].push_back(i[1]);
-            adj[i[1]].push_back(i[0]);
-        }
-
-        parent.resize(edges_count+1);
-        dis.resize(edges_count+1);
-
-        calParent(0);
-
-        int cur=bob;
-        int curDis=0;
-        while(cur!=0){
-            if(dis[cur]>curDis)
-            amount[cur]=0;
-            else if(dis[cur]==curDis)
-            amount[cur]/=2;
-            cur=parent[cur];
-            curDis++;
-        }
-        return dfs(0,amount);
+    long long numberOfPairs(vector<int>& nums1, vector<int>& nums2, int diff) {
+        int n=nums1.size();
+        vector<int> vi(n);
+        for(int i=0;i<n;i++){
+            vi[i]=nums1[i]-nums2[i];
+        } 
+        return solve(0,n-1,vi,diff);
         
     }
 };
