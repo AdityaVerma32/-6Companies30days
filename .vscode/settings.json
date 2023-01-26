@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "xiosbase": "cpp",
+        "algorithm": "cpp",
+        "map": "cpp",
+        "utility": "cpp",
+        "vector": "cpp"
+    },
+    "workbench.colorTheme": "Monokai"
+}
