@@ -4,7 +4,9 @@
         "algorithm": "cpp",
         "map": "cpp",
         "utility": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "xtree": "cpp",
+        "numeric": "cpp"
     },
     "workbench.colorTheme": "Monokai"
 }
